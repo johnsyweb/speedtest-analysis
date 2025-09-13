@@ -1,0 +1,54 @@
+version: 2
+updates:
+  # Enable version updates for npm (pnpm uses npm registry) - root directory
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Australia/Sydney"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "paj"
+    assignees:
+      - "paj"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "javascript"
+    ignore:
+      # Ignore major version updates for Chart.js to avoid breaking changes
+      - dependency-name: "chart.js"
+        update-types: ["version-update:semver-major"]
+      # Ignore major version updates for Chart.js types
+      - dependency-name: "@types/chart.js"
+        update-types: ["version-update:semver-major"]
+      # Ignore major version updates for TypeScript to avoid breaking changes
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      # Ignore major version updates for Node types
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Australia/Sydney"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "paj"
+    assignees:
+      - "paj"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "github-actions"
+      - "ci"
