@@ -30,9 +30,17 @@ jobs:
     - name: Build web application
       run: pnpm run web:build
       
+    - name: List build output
+      run: |
+        echo "Build output contents:"
+        ls -la ./dist-web/
+        echo "Index.html content preview:"
+        head -20 ./dist-web/index.html
+      
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./dist-web
+        cname: johnsy.com
