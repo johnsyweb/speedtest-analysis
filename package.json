@@ -1,0 +1,61 @@
+{
+  "name": "complete-speedtest-analysis",
+  "version": "1.0.0",
+  "description": "Comprehensive TypeScript-based speedtest analysis tool with interactive charts and detailed reporting",
+  "main": "speedtest-viz.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node speedtest-viz.ts",
+    "dev": "ts-node --watch speedtest-viz.ts",
+    "analyze": "ts-node speedtest-viz.ts",
+    "install-deps": "./install_speedtest_deps.sh",
+    "web:dev": "vite",
+    "web:build": "vite build",
+    "web:preview": "vite preview",
+    "setup": "mise install && pnpm install",
+    "clean": "pnpm store prune && rm -rf node_modules pnpm-lock.yaml",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@types/chart.js": "^2.9.0"
+  },
+  "bin": {
+    "speedtest-analysis": "./speedtest-viz.ts"
+  },
+  "keywords": [
+    "speedtest",
+    "visualization",
+    "typescript",
+    "network",
+    "performance",
+    "interactive",
+    "charts",
+    "public-ip-detection",
+    "html-report",
+    "analysis"
+  ],
+  "author": "Complete Speedtest Analysis",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "."
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@types/chart.js": "*"
+      }
+    }
+  }
+}
