@@ -10,12 +10,24 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
     steps:
     - name: Checkout
       uses: actions/checkout@v5
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
 
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
+      with:
+        version: 8
         
     - name: Install dependencies
       run: pnpm install --no-frozen-lockfile
@@ -30,10 +42,14 @@ jobs:
         echo "Index.html content preview:"
         head -20 ./dist-web/index.html
       
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      if: github.ref == 'refs/heads/main'
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist-web
-        cname: johnsy.com
+        path: ./dist-web
+        
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
+      if: github.ref == 'refs/heads/main'
