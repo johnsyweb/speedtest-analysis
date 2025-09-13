@@ -9,10 +9,6 @@ updates:
       time: "09:00"
       timezone: "Australia/Sydney"
     open-pull-requests-limit: 10
-    reviewers:
-      - "paj"
-    assignees:
-      - "paj"
     commit-message:
       prefix: "deps"
       include: "scope"
@@ -42,10 +38,6 @@ updates:
       time: "09:00"
       timezone: "Australia/Sydney"
     open-pull-requests-limit: 5
-    reviewers:
-      - "paj"
-    assignees:
-      - "paj"
     commit-message:
       prefix: "ci"
       include: "scope"
