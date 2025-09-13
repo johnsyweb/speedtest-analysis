@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: '/speedtest-analysis/',
   root: 'web',
   build: {
     outDir: '../dist-web',
