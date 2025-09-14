@@ -49,6 +49,7 @@ export interface ProcessedData {
     mtu: number;
     status: string;
     hasData: boolean;
+    ipType: 'public' | 'private' | 'n/a';
   };
 }
 

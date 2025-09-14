@@ -90,7 +90,7 @@ This project uses `mise` for development environment management and `pnpm` for p
 # Copy launchd configuration
 cp com.speedtest.plist ~/Library/LaunchAgents/
 
-# Load the service 
+# Load the service
 launchctl load ~/Library/LaunchAgents/com.speedtest.plist
 ```
 

@@ -41,7 +41,7 @@ export class UIManager {
    */
   updateSummaryStats(stats: SummaryStats): void {
     const summaryContainer = document.getElementById('summaryStats')!;
-    
+
     summaryContainer.innerHTML = `
       <div class="stat-card">
         <div class="stat-value">${stats.totalTests}</div>
@@ -87,7 +87,7 @@ export class UIManager {
    */
   updateDetailedTable(data: ProcessedData[]): void {
     const tableContainer = document.getElementById('detailedTable')!;
-    
+
     const tableHTML = `
       <table>
         <thead>
@@ -128,7 +128,7 @@ export class UIManager {
         </tbody>
       </table>
     `;
-    
+
     tableContainer.innerHTML = tableHTML;
   }
 
@@ -137,7 +137,7 @@ export class UIManager {
    */
   updateCSVData(data: ProcessedData[]): void {
     const csvContainer = document.getElementById('csvData')!;
-    
+
     const csvHeaders = [
       'Timestamp',
       'Download (Mbps)',

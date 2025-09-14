@@ -29,13 +29,14 @@ class SpeedtestApp {
   }
 
   /**
-   * Handle file loading
-   */
-  private async handleFileLoad(): void {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    const files = fileInput.files;
+   /**
+    * Handle file loading
+    */
+   private async handleFileLoad(): Promise<void> {
+     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+     const files = fileInput.files;
 
-    if (!files || files.length === 0) {
+     if (!files || files.length === 0) {
       this.uiManager.showError('Please select one or more JSON files to load.');
       return;
     }
@@ -49,10 +50,10 @@ class SpeedtestApp {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const text = await this.readFileAsText(file);
-        
+
         try {
           const jsonData = JSON.parse(text);
-          
+
           // Handle both single objects and arrays
           if (Array.isArray(jsonData)) {
             allData.push(...jsonData);

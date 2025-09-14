@@ -45,26 +45,43 @@ export class ChartManager {
       interface_ip: d.interface.hasData ? d.interface.ip : "N/A",
       interface_mtu: d.interface.hasData ? d.interface.mtu.toString() : "N/A",
       interface_status: d.interface.hasData ? d.interface.status : "N/A",
-      is_public_ip: d.interface.hasData ? this.isPublicIP(d.interface.ip) : false,
+      ip_type: d.interface.ipType,
     }));
 
-    // Use consistent colors for time-based chart
-    const downloadColor = 'rgba(75, 192, 192, 0.8)';
-    const downloadBorderColor = 'rgb(75, 192, 192)';
-    
-    const uploadColor = 'rgba(255, 99, 132, 0.8)';
-    const uploadBorderColor = 'rgb(255, 99, 132)';
-    
-    const pingColor = 'rgba(54, 162, 235, 0.8)';
-    const pingBorderColor = 'rgb(54, 162, 235)';
+    // Define colors for different IP types
+    const getPointColor = (ipType: string) => {
+      switch (ipType) {
+        case 'public':
+          return 'rgba(75, 192, 192, 0.8)'; // Teal
+        case 'private':
+          return 'rgba(255, 159, 64, 0.8)'; // Orange
+        case 'n/a':
+          return 'rgba(201, 203, 207, 0.8)'; // Grey
+        default:
+          return 'rgba(201, 203, 207, 0.8)'; // Default grey
+      }
+    };
+
+    const getBorderColor = (ipType: string) => {
+      switch (ipType) {
+        case 'public':
+          return 'rgb(75, 192, 192)'; // Teal
+        case 'private':
+          return 'rgb(255, 159, 64)'; // Orange
+        case 'n/a':
+          return 'rgb(201, 203, 207)'; // Grey
+        default:
+          return 'rgb(201, 203, 207)'; // Default grey
+      }
+    };
 
     const chartData = {
       datasets: [
         {
           label: 'Download (Mbps)',
           data: downloads,
-          borderColor: downloadBorderColor,
-          backgroundColor: downloadColor,
+          backgroundColor: data.map(d => getPointColor(d.interface.ipType)),
+          borderColor: 'rgb(75, 192, 192)', // Teal line for download
           yAxisID: 'y',
           pointRadius: 6,
           pointHoverRadius: 8
@@ -72,8 +89,8 @@ export class ChartManager {
         {
           label: 'Upload (Mbps)',
           data: uploads,
-          borderColor: uploadBorderColor,
-          backgroundColor: uploadColor,
+          backgroundColor: data.map(d => getPointColor(d.interface.ipType)),
+          borderColor: 'rgb(255, 99, 132)', // Red line for upload
           yAxisID: 'y',
           pointRadius: 6,
           pointHoverRadius: 8
@@ -81,8 +98,8 @@ export class ChartManager {
         {
           label: 'Ping (ms)',
           data: pings,
-          borderColor: pingBorderColor,
-          backgroundColor: pingColor,
+          backgroundColor: data.map(d => getPointColor(d.interface.ipType)),
+          borderColor: 'rgb(54, 162, 235)', // Blue line for ping
           yAxisID: 'y1',
           pointRadius: 6,
           pointHoverRadius: 8
@@ -101,6 +118,48 @@ export class ChartManager {
           mode: 'index'
         },
         plugins: {
+          legend: {
+            display: true,
+            labels: {
+              generateLabels: function(chart: any) {
+                const original = Chart.defaults.plugins.legend.labels.generateLabels;
+                const originalLabels = original.call(this, chart);
+
+                // Add IP type legend items
+                const ipTypeLabels = [
+                  {
+                    text: 'Public IP',
+                    fillStyle: 'rgb(75, 192, 192)',
+                    strokeStyle: 'rgb(75, 192, 192)',
+                    lineWidth: 2,
+                    pointStyle: 'circle',
+                    hidden: false,
+                    datasetIndex: -1
+                  },
+                  {
+                    text: 'Private IP',
+                    fillStyle: 'rgb(255, 159, 64)',
+                    strokeStyle: 'rgb(255, 159, 64)',
+                    lineWidth: 2,
+                    pointStyle: 'circle',
+                    hidden: false,
+                    datasetIndex: -1
+                  },
+                  {
+                    text: 'N/A IP',
+                    fillStyle: 'rgb(201, 203, 207)',
+                    strokeStyle: 'rgb(201, 203, 207)',
+                    lineWidth: 2,
+                    pointStyle: 'circle',
+                    hidden: false,
+                    datasetIndex: -1
+                  }
+                ];
+
+                return [...originalLabels, ...ipTypeLabels];
+              }
+            }
+          },
           tooltip: {
             callbacks: {
               title: function(context: any) {
@@ -124,11 +183,12 @@ export class ChartManager {
                 ];
 
                 if (hd.interface_name !== 'N/A') {
+                  const ipTypeDisplay = hd.ip_type.toUpperCase();
                   tooltipLines.push(
                     `Interface: ${hd.interface_name} (${hd.interface_ip})`,
                     `MTU: ${hd.interface_mtu}`,
                     `Status: ${hd.interface_status}`,
-                    `IP Type: ${hd.is_public_ip ? 'PUBLIC' : 'Private'}`
+                    `IP Type: ${ipTypeDisplay}`
                   );
                 }
 
@@ -150,7 +210,7 @@ export class ChartManager {
             const element = elements[0];
             const index = element.index;
             const hd = hoverData[index];
-            
+
             if (hd.share_url && hd.share_url !== 'N/A') {
               window.open(hd.share_url, '_blank');
             }
@@ -197,25 +257,6 @@ export class ChartManager {
         } as any
       } as any
     });
-  }
-
-  /**
-   * Check if IP address is public
-   */
-  private isPublicIP(ip: string): boolean {
-    const privateRanges = [
-      /^10\./, // 10.0.0.0/8
-      /^172\.(1[6-9]|2[0-9]|3[0-1])\./, // 172.16.0.0/12
-      /^192\.168\./, // 192.168.0.0/16
-      /^127\./, // 127.0.0.0/8 (loopback)
-      /^169\.254\./, // 169.254.0.0/16 (link-local)
-      /^::1$/, // IPv6 loopback
-      /^fe80:/, // IPv6 link-local
-      /^fc00:/, // IPv6 unique local
-      /^fd00:/, // IPv6 unique local
-    ];
-
-    return !privateRanges.some((range) => range.test(ip));
   }
 
   /**
