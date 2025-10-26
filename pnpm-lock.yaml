@@ -20,8 +20,8 @@ devDependencies:
     specifier: ^2.9.0
     version: 2.9.41
   vite:
-    specifier: ^7.1.11
-    version: 7.1.11(@types/node@20.19.21)
+    specifier: ^7.1.12
+    version: 7.1.12(@types/node@20.19.21)
 
 packages:
 
@@ -690,8 +690,8 @@ packages:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
     dev: false
 
-  /vite@7.1.11(@types/node@20.19.21):
-    resolution: {integrity: sha512-uzcxnSDVjAopEUjljkWh8EIrg6tlzrjFUfMcR1EVsRDGwf/ccef0qQPRyOrROwhrTDaApueq+ja+KLPlzR/zdg==}
+  /vite@7.1.12(@types/node@20.19.21):
+    resolution: {integrity: sha512-ZWyE8YXEXqJrrSLvYgrRP7p62OziLW7xI5HYGWFzOvupfAlrLvURSzv/FyGyy0eidogEM3ujU+kUG1zuHgb6Ug==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
