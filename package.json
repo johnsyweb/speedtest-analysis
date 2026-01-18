@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node speedtest-viz.ts",
-    "dev": "ts-node --watch speedtest-viz.ts",
+    "dev": "vite",
     "analyze": "ts-node speedtest-viz.ts",
     "install-deps": "./install_speedtest_deps.sh",
     "web:dev": "vite",

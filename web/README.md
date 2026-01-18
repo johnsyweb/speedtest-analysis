@@ -2,6 +2,10 @@
 
 A modern TypeScript web application for analysing speedtest results with interactive charts and detailed reporting.
 
+## ❓ Why this exists
+
+This web UI was created to quickly inspect and visualise speedtest JSON files produced by the companion data-collection scripts. It is intentionally client-side so you can run the UI locally and keep your raw data private.
+
 ## Features
 
 - **Runtime JSON Loading**: Load speedtest JSON files directly in the browser
@@ -73,6 +77,24 @@ pnpm run web:preview
 5. Click on any chart point to open the speedtest result in a new tab
 6. Explore the detailed table for comprehensive data viewing
 7. Download CSV data for external analysis
+
+### Generating speedtest JSON files
+
+This UI expects JSON files like those created by `speedtest.sh` in the repository root. To generate data:
+
+```bash
+# Install dependencies (macOS)
+brew install speedtest-cli jc jq
+
+# Run a single measurement
+./speedtest.sh
+
+# Enable automated testing (launchd)
+cp ../com.speedtest.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.speedtest.plist
+```
+
+Saved files are written to `~/SpeedtestResults/` and can be loaded into the web UI via the file picker.
 
 ## Benefits Over Previous Approach
 

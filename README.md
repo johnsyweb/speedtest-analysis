@@ -3,9 +3,15 @@
 
 A TypeScript web application for analysing and visualising speedtest data with public IP detection, interactive charts, and detailed reporting.
 
+## ❓ Why this project exists
+
+I built this tool to collect and visualise my ISP speedtest results over extended periods (e.g. 24 hours) so I could investigate intermittent issues. I open-sourced it because I believe in free, transparent tools for personal network diagnostics — use it, modify it, and share improvements.
+
+This repository contains both the data-collection scripts (for automated speedtests) and a client-side web application to load and explore the resulting JSON files.
+
 ## 🌐 Live Demo
 
-**[🚀 Try the Web Application](https://johnsy.com/speedtest-analysis/)** - Load your speedtest JSON files and explore interactive charts!
+**[🚀 Try the Web Application](https://www.johnsy.com/speedtest-analysis/)** - Load your speedtest JSON files and explore interactive charts!
 
 ## 🚀 Features
 
@@ -93,6 +99,39 @@ cp com.speedtest.plist ~/Library/LaunchAgents/
 # Load the service
 launchctl load ~/Library/LaunchAgents/com.speedtest.plist
 ```
+
+### How to generate speedtest data (step-by-step)
+
+1. Install dependencies (macOS/Homebrew):
+
+```bash
+brew install speedtest-cli jc jq
+```
+
+2. Or run the included installer:
+
+```bash
+./install_speedtest_deps.sh
+```
+
+3. Run a one-off speedtest and save a JSON file:
+
+```bash
+./speedtest.sh
+# Creates: ~/SpeedtestResults/speedtest_YYYYMMDD_HHMMSS.json
+```
+
+4. To enable automated, periodic tests (hourly by default using the provided LaunchAgent):
+
+```bash
+cp com.speedtest.plist ~/Library/LaunchAgents/
+launchctl load ~/Library/LaunchAgents/com.speedtest.plist
+```
+
+Notes:
+- Results are saved to `~/SpeedtestResults/`.
+- The `speedtest.sh` script captures local interface info using `jc --ifconfig` and attaches it to each JSON result under the `x-ifconfig` key.
+- Old files are rotated; the script keeps approximately the last 72 hours of data.
 
 ## 📊 What You Get
 
@@ -225,3 +264,8 @@ Contributions welcome for:
 ---
 
 **Speedtest Analysis** - Network performance monitoring made simple! 🚀📊
+
+## 🔎 SEO and Sharing
+
+- A placeholder screenshot is available at `web/public/screenshot.svg` and is referenced in the web UI for social sharing and previews.
+- A `sitemap.xml` is provided at `web/sitemap.xml` to aid discovery by crawlers; update the URLs if you host on a different domain.

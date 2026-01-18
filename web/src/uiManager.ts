@@ -7,6 +7,7 @@ export class UIManager {
   showLoading(): void {
     document.getElementById('loadingIndicator')!.style.display = 'block';
     document.getElementById('errorMessage')!.style.display = 'none';
+    document.getElementById('welcomeSection')!.style.display = 'none';
     document.getElementById('content')!.style.display = 'none';
   }
 
@@ -24,6 +25,7 @@ export class UIManager {
     document.getElementById('loadingIndicator')!.style.display = 'none';
     document.getElementById('errorMessage')!.style.display = 'block';
     document.getElementById('errorText')!.textContent = message;
+    document.getElementById('welcomeSection')!.style.display = 'block';
     document.getElementById('content')!.style.display = 'none';
   }
 
@@ -33,6 +35,7 @@ export class UIManager {
   showContent(): void {
     document.getElementById('loadingIndicator')!.style.display = 'none';
     document.getElementById('errorMessage')!.style.display = 'none';
+    document.getElementById('welcomeSection')!.style.display = 'none';
     document.getElementById('content')!.style.display = 'block';
   }
 

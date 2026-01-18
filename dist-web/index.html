@@ -1,45 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speedtest Analysis</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Speedtest Analysis</title>
+        <meta name="description" content="Speedtest Analysis — load and visualise speedtest-cli JSON results with interactive charts and CSV export.">
+        <meta name="keywords" content="speedtest, network, ISP, monitoring, speedtest-cli, Chart.js, latency, bandwidth">
+        <!-- Atkinson Hyperlegible Font -->
+        <link rel="preload" href="https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Regular.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Bold.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Italic.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-BoldItalic.woff2" as="font" type="font/woff2" crossorigin>
+        <!-- Open Graph -->
+        <meta property="og:title" content="Speedtest Analysis">
+        <meta property="og:description" content="Load and visualise speedtest-cli JSON results with interactive charts and CSV export.">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="/speedtest-analysis/screenshot.png">
+        <meta property="og:url" content="https://www.johnsy.com/speedtest-analysis/">
+        <link rel="sitemap" type="application/xml" title="Sitemap" href="/speedtest-analysis/sitemap.xml">
+
+        <!-- JSON-LD structured data -->
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Speedtest Analysis",
+            "description": "Client-side web app to load and visualise speedtest-cli JSON results. Includes charts, summaries and CSV export.",
+            "url": "https://www.johnsy.com/speedtest-analysis/",
+            "applicationCategory": "DeveloperTool",
+            "operatingSystem": "All",
+            "image": "https://www.johnsy.com/speedtest-analysis/screenshot.png"
+        }
+        </script>
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            background-color: #f5f5f5; 
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
         }
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
         }
-        h1 { 
-            text-align: center; 
-            color: #2c3e50; 
-            margin-bottom: 30px; 
-            font-size: 2.5em; 
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-Italic.woff2') format('woff2');
+            font-weight: 400;
+            font-style: italic;
+            font-display: swap;
         }
-        h2 { 
-            color: #34495e; 
-            border-bottom: 2px solid #3498db; 
-            padding-bottom: 10px; 
-            margin-top: 40px; 
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('https://www.johnsy.com/assets/fonts/Atkinson-Hyperlegible-BoldItalic.woff2') format('woff2');
+            font-weight: 700;
+            font-style: italic;
+            font-display: swap;
         }
-        .loading { 
-            text-align: center; 
-            padding: 50px; 
-            color: #7f8c8d; 
+        body {
+            font-family: 'Atkinson Hyperlegible', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
-        .error { 
-            text-align: center; 
-            padding: 50px; 
-            color: #e74c3c; 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #7f8c8d;
+        }
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #e74c3c;
         }
         .file-input-container {
             margin: 20px 0;
@@ -122,13 +178,71 @@
         .btn:hover {
             background-color: #2980b9;
         }
+        .welcome-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .welcome-section h2 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            margin-top: 0;
+        }
+        .welcome-section h3 {
+            color: rgba(255,255,255,0.9);
+            margin-top: 25px;
+            text-align: left;
+        }
+        .welcome-section p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        .welcome-section ul {
+            text-align: left;
+            display: inline-block;
+        }
+        .welcome-section li {
+            margin: 8px 0;
+        }
+        .welcome-section code {
+            background: rgba(0,0,0,0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
     </style>
-  <script type="module" crossorigin src="/speedtest-analysis/assets/index-DLO1cCQk.js"></script>
+  <script type="module" crossorigin src="/speedtest-analysis/assets/index-YYkm3BOF.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Speedtest Analysis</h1>
-        
+
+        <div id="welcomeSection" class="welcome-section">
+            <h2>❓ Why use this tool?</h2>
+            <p>Monitor your internet speed over time to investigate network issues, verify ISP performance, and track changes. This tool helps you collect and visualize speedtest results from your own infrastructure.</p>
+            
+            <h3>📊 How to get started:</h3>
+            <ol>
+                <li><strong>Generate speedtest data</strong> by running the automated collection scripts</li>
+                <li><strong>Load your JSON files</strong> into this app using the file picker below</li>
+                <li><strong>Explore interactive charts</strong> and detailed statistics</li>
+                <li><strong>Export results</strong> as CSV for further analysis</li>
+            </ol>
+
+            <h3>🚀 Quick setup (macOS):</h3>
+            <ul>
+                <li>Clone the project: <code>git clone https://github.com/johnsyweb/speedtest-analysis.git</code></li>
+                <li>Install dependencies: <code>brew install speedtest-cli jc jq</code></li>
+                <li>Run a test: <code>./speedtest.sh</code></li>
+                <li>Enable automation: <code>cp com.speedtest.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.speedtest.plist</code></li>
+                <li>Results saved to: <code>~/SpeedtestResults/</code></li>
+            </ul>
+            <p style="margin-top:20px; opacity:0.9;"><strong>Ready?</strong> Select your speedtest JSON files below and click "Load Data"</p>
+        </div>
+
         <div class="file-input-container">
             <h3>Load Speedtest Data</h3>
             <p>Select JSON files from your speedtest results directory:</p>
@@ -148,16 +262,16 @@
 
         <div id="content" style="display: none;">
             <div id="summaryStats" class="summary-stats"></div>
-            
+
             <h2>Interactive Chart</h2>
             <div class="chart-instructions">Click on any data point to open the speedtest result</div>
             <div class="chart-container">
                 <canvas id="speedChart"></canvas>
             </div>
-            
+
             <h2>Detailed Results</h2>
             <div id="detailedTable"></div>
-            
+
             <h2>Export Data</h2>
             <button id="downloadCsvBtn" class="btn">Download CSV</button>
             <div id="csvData" style="display: none;"></div>
