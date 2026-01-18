@@ -7,7 +7,7 @@ A TypeScript web application for analysing and visualising speedtest data with p
 
 I built this tool to collect and visualise my ISP speedtest results over extended periods (e.g. 24 hours) so I could investigate intermittent issues. I open-sourced it because I believe in free, transparent tools for personal network diagnostics — use it, modify it, and share improvements.
 
-This repository contains both the data-collection scripts (for automated speedtests) and a client-side web application to load and explore the resulting JSON files.
+This repository contains both the data-collection scripts (for automated speedtests) and a client-side web application to load and explore the resulting JSON files. Visit the [live app](https://www.johnsy.com/speedtest-analysis/) to get started.
 
 ## 🌐 Live Demo
 
