@@ -1,49 +1,49 @@
-import { ProcessedData, SummaryStats } from './types';
+import { ProcessedData, SummaryStats } from "./types";
 
 export class UIManager {
   /**
    * Show loading indicator
    */
   showLoading(): void {
-    document.getElementById('loadingIndicator')!.style.display = 'block';
-    document.getElementById('errorMessage')!.style.display = 'none';
-    document.getElementById('welcomeSection')!.style.display = 'none';
-    document.getElementById('content')!.style.display = 'none';
+    document.getElementById("loadingIndicator")!.style.display = "block";
+    document.getElementById("errorMessage")!.style.display = "none";
+    document.getElementById("welcomeSection")!.style.display = "none";
+    document.getElementById("dataPanel")!.style.display = "none";
   }
 
   /**
    * Hide loading indicator
    */
   hideLoading(): void {
-    document.getElementById('loadingIndicator')!.style.display = 'none';
+    document.getElementById("loadingIndicator")!.style.display = "none";
   }
 
   /**
    * Show error message
    */
   showError(message: string): void {
-    document.getElementById('loadingIndicator')!.style.display = 'none';
-    document.getElementById('errorMessage')!.style.display = 'block';
-    document.getElementById('errorText')!.textContent = message;
-    document.getElementById('welcomeSection')!.style.display = 'block';
-    document.getElementById('content')!.style.display = 'none';
+    document.getElementById("loadingIndicator")!.style.display = "none";
+    document.getElementById("errorMessage")!.style.display = "block";
+    document.getElementById("errorText")!.textContent = message;
+    document.getElementById("welcomeSection")!.style.display = "block";
+    document.getElementById("dataPanel")!.style.display = "none";
   }
 
   /**
    * Show content
    */
   showContent(): void {
-    document.getElementById('loadingIndicator')!.style.display = 'none';
-    document.getElementById('errorMessage')!.style.display = 'none';
-    document.getElementById('welcomeSection')!.style.display = 'none';
-    document.getElementById('content')!.style.display = 'block';
+    document.getElementById("loadingIndicator")!.style.display = "none";
+    document.getElementById("errorMessage")!.style.display = "none";
+    document.getElementById("welcomeSection")!.style.display = "none";
+    document.getElementById("dataPanel")!.style.display = "block";
   }
 
   /**
    * Update summary statistics
    */
   updateSummaryStats(stats: SummaryStats): void {
-    const summaryContainer = document.getElementById('summaryStats')!;
+    const summaryContainer = document.getElementById("summaryStats")!;
 
     summaryContainer.innerHTML = `
       <div class="stat-card">
@@ -89,7 +89,7 @@ export class UIManager {
    * Update detailed table
    */
   updateDetailedTable(data: ProcessedData[]): void {
-    const tableContainer = document.getElementById('detailedTable')!;
+    const tableContainer = document.getElementById("detailedTable")!;
 
     const tableHTML = `
       <table>
@@ -107,8 +107,10 @@ export class UIManager {
           </tr>
         </thead>
         <tbody>
-          ${data.map(d => `
-            <tr class="${d.interface.hasData && this.isPublicIP(d.interface.ip) ? 'public-ip' : 'private-ip'}">
+          ${data
+            .map(
+              (d) => `
+            <tr class="${d.interface.hasData && this.isPublicIP(d.interface.ip) ? "public-ip" : "private-ip"}">
               <td>${d.timestamp.toLocaleString("en-AU", {
                 year: "numeric",
                 month: "2-digit",
@@ -123,11 +125,13 @@ export class UIManager {
               <td>${d.ping.toFixed(1)}</td>
               <td>${d.server.name}, ${d.server.country}</td>
               <td>${d.client.isp}</td>
-              <td>${d.interface.hasData ? `${d.interface.name} (${d.interface.ip})` : 'N/A'}</td>
-              <td>${d.interface.hasData ? (this.isPublicIP(d.interface.ip) ? 'PUBLIC' : 'Private') : 'N/A'}</td>
-              <td>${d.share && d.share !== 'N/A' ? `<a href="${d.share}" target="_blank" style="color: #007bff; text-decoration: underline;">View Result</a>` : 'N/A'}</td>
+              <td>${d.interface.hasData ? `${d.interface.name} (${d.interface.ip})` : "N/A"}</td>
+              <td>${d.interface.hasData ? (this.isPublicIP(d.interface.ip) ? "PUBLIC" : "Private") : "N/A"}</td>
+              <td>${d.share && d.share !== "N/A" ? `<a href="${d.share}" target="_blank" rel="noopener noreferrer">View Result</a>` : "N/A"}</td>
             </tr>
-          `).join('')}
+          `,
+            )
+            .join("")}
         </tbody>
       </table>
     `;
@@ -139,51 +143,57 @@ export class UIManager {
    * Update CSV data
    */
   updateCSVData(data: ProcessedData[]): void {
-    const csvContainer = document.getElementById('csvData')!;
+    const csvContainer = document.getElementById("csvData")!;
 
     const csvHeaders = [
-      'Timestamp',
-      'Download (Mbps)',
-      'Upload (Mbps)',
-      'Ping (ms)',
-      'Server Name',
-      'Server Country',
-      'Server Sponsor',
-      'Server Distance (km)',
-      'Client ISP',
-      'Client Country',
-      'Client IP',
-      'Interface Name',
-      'Interface IP',
-      'Interface MAC',
-      'Interface MTU',
-      'Interface Status',
-      'IP Type',
-      'Share URL'
-    ].join(',');
+      "Timestamp",
+      "Download (Mbps)",
+      "Upload (Mbps)",
+      "Ping (ms)",
+      "Server Name",
+      "Server Country",
+      "Server Sponsor",
+      "Server Distance (km)",
+      "Client ISP",
+      "Client Country",
+      "Client IP",
+      "Interface Name",
+      "Interface IP",
+      "Interface MAC",
+      "Interface MTU",
+      "Interface Status",
+      "IP Type",
+      "Share URL",
+    ].join(",");
 
-    const csvRows = data.map(d => [
-      d.timestamp.toISOString(),
-      d.download.toFixed(1),
-      d.upload.toFixed(1),
-      d.ping.toFixed(1),
-      d.server.name,
-      d.server.country,
-      d.server.sponsor,
-      d.server.d.toFixed(1),
-      d.client.isp,
-      d.client.country,
-      d.client.ip,
-      d.interface.hasData ? d.interface.name : '',
-      d.interface.hasData ? d.interface.ip : '',
-      d.interface.hasData ? d.interface.mac : '',
-      d.interface.hasData ? d.interface.mtu.toString() : '',
-      d.interface.hasData ? d.interface.status : '',
-      d.interface.hasData ? (this.isPublicIP(d.interface.ip) ? 'PUBLIC' : 'Private') : '',
-      d.share
-    ].join(','));
+    const csvRows = data.map((d) =>
+      [
+        d.timestamp.toISOString(),
+        d.download.toFixed(1),
+        d.upload.toFixed(1),
+        d.ping.toFixed(1),
+        d.server.name,
+        d.server.country,
+        d.server.sponsor,
+        d.server.d.toFixed(1),
+        d.client.isp,
+        d.client.country,
+        d.client.ip,
+        d.interface.hasData ? d.interface.name : "",
+        d.interface.hasData ? d.interface.ip : "",
+        d.interface.hasData ? d.interface.mac : "",
+        d.interface.hasData ? d.interface.mtu.toString() : "",
+        d.interface.hasData ? d.interface.status : "",
+        d.interface.hasData
+          ? this.isPublicIP(d.interface.ip)
+            ? "PUBLIC"
+            : "Private"
+          : "",
+        d.share,
+      ].join(","),
+    );
 
-    csvContainer.textContent = [csvHeaders, ...csvRows].join('\n');
+    csvContainer.textContent = [csvHeaders, ...csvRows].join("\n");
   }
 
   /**

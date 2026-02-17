@@ -15,7 +15,7 @@ export interface SpeedtestData {
     ip: string;
   };
   share: string;
-  'x-ifconfig'?: {
+  "x-ifconfig"?: {
     name: string;
     ipv4_addr: string;
     mac_addr: string;
@@ -49,7 +49,7 @@ export interface ProcessedData {
     mtu: number;
     status: string;
     hasData: boolean;
-    ipType: 'public' | 'private' | 'n/a';
+    ipType: "public" | "private" | "n/a";
   };
 }
 

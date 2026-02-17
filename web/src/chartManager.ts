@@ -1,4 +1,4 @@
-import { ProcessedData } from './types';
+import { ProcessedData } from "./types";
 
 declare const Chart: any;
 
@@ -9,9 +9,11 @@ export class ChartManager {
    * Initialize the chart
    */
   initializeChart(data: ProcessedData[]): void {
-    const ctx = (document.getElementById('speedChart') as HTMLCanvasElement).getContext('2d');
+    const ctx = (
+      document.getElementById("speedChart") as HTMLCanvasElement
+    ).getContext("2d");
     if (!ctx) {
-      throw new Error('Could not get chart context');
+      throw new Error("Could not get chart context");
     }
 
     // Prepare data for Chart.js with time-based x-axis
@@ -51,211 +53,212 @@ export class ChartManager {
     // Define colors for different IP types
     const getPointColor = (ipType: string) => {
       switch (ipType) {
-        case 'public':
-          return 'rgba(75, 192, 192, 0.8)'; // Teal
-        case 'private':
-          return 'rgba(255, 159, 64, 0.8)'; // Orange
-        case 'n/a':
-          return 'rgba(201, 203, 207, 0.8)'; // Grey
+        case "public":
+          return "rgba(75, 192, 192, 0.8)"; // Teal
+        case "private":
+          return "rgba(255, 159, 64, 0.8)"; // Orange
+        case "n/a":
+          return "rgba(201, 203, 207, 0.8)"; // Grey
         default:
-          return 'rgba(201, 203, 207, 0.8)'; // Default grey
+          return "rgba(201, 203, 207, 0.8)"; // Default grey
       }
     };
 
     const getBorderColor = (ipType: string) => {
       switch (ipType) {
-        case 'public':
-          return 'rgb(75, 192, 192)'; // Teal
-        case 'private':
-          return 'rgb(255, 159, 64)'; // Orange
-        case 'n/a':
-          return 'rgb(201, 203, 207)'; // Grey
+        case "public":
+          return "rgb(75, 192, 192)"; // Teal
+        case "private":
+          return "rgb(255, 159, 64)"; // Orange
+        case "n/a":
+          return "rgb(201, 203, 207)"; // Grey
         default:
-          return 'rgb(201, 203, 207)'; // Default grey
+          return "rgb(201, 203, 207)"; // Default grey
       }
     };
 
     const chartData = {
       datasets: [
         {
-          label: 'Download (Mbps)',
+          label: "Download (Mbps)",
           data: downloads,
-          backgroundColor: data.map(d => getPointColor(d.interface.ipType)),
-          borderColor: 'rgb(75, 192, 192)', // Teal line for download
-          yAxisID: 'y',
+          backgroundColor: data.map((d) => getPointColor(d.interface.ipType)),
+          borderColor: "rgb(75, 192, 192)", // Teal line for download
+          yAxisID: "y",
           pointRadius: 6,
-          pointHoverRadius: 8
+          pointHoverRadius: 8,
         },
         {
-          label: 'Upload (Mbps)',
+          label: "Upload (Mbps)",
           data: uploads,
-          backgroundColor: data.map(d => getPointColor(d.interface.ipType)),
-          borderColor: 'rgb(255, 99, 132)', // Red line for upload
-          yAxisID: 'y',
+          backgroundColor: data.map((d) => getPointColor(d.interface.ipType)),
+          borderColor: "rgb(255, 99, 132)", // Red line for upload
+          yAxisID: "y",
           pointRadius: 6,
-          pointHoverRadius: 8
+          pointHoverRadius: 8,
         },
         {
-          label: 'Ping (ms)',
+          label: "Ping (ms)",
           data: pings,
-          backgroundColor: data.map(d => getPointColor(d.interface.ipType)),
-          borderColor: 'rgb(54, 162, 235)', // Blue line for ping
-          yAxisID: 'y1',
+          backgroundColor: data.map((d) => getPointColor(d.interface.ipType)),
+          borderColor: "rgb(54, 162, 235)", // Blue line for ping
+          yAxisID: "y1",
           pointRadius: 6,
-          pointHoverRadius: 8
-        }
-      ]
+          pointHoverRadius: 8,
+        },
+      ],
     };
 
     this.chart = new Chart(ctx, {
-      type: 'line',
+      type: "line",
       data: chartData,
       options: {
         responsive: true,
         maintainAspectRatio: false,
         interaction: {
           intersect: false,
-          mode: 'index'
+          mode: "index",
         },
         plugins: {
           legend: {
             display: true,
             labels: {
-              generateLabels: function(chart: any) {
-                const original = Chart.defaults.plugins.legend.labels.generateLabels;
+              generateLabels: function (chart: any) {
+                const original =
+                  Chart.defaults.plugins.legend.labels.generateLabels;
                 const originalLabels = original.call(this, chart);
 
                 // Add IP type legend items
                 const ipTypeLabels = [
                   {
-                    text: 'Public IP',
-                    fillStyle: 'rgb(75, 192, 192)',
-                    strokeStyle: 'rgb(75, 192, 192)',
+                    text: "Public IP",
+                    fillStyle: "rgb(75, 192, 192)",
+                    strokeStyle: "rgb(75, 192, 192)",
                     lineWidth: 2,
-                    pointStyle: 'circle',
+                    pointStyle: "circle",
                     hidden: false,
-                    datasetIndex: -1
+                    datasetIndex: -1,
                   },
                   {
-                    text: 'Private IP',
-                    fillStyle: 'rgb(255, 159, 64)',
-                    strokeStyle: 'rgb(255, 159, 64)',
+                    text: "Private IP",
+                    fillStyle: "rgb(255, 159, 64)",
+                    strokeStyle: "rgb(255, 159, 64)",
                     lineWidth: 2,
-                    pointStyle: 'circle',
+                    pointStyle: "circle",
                     hidden: false,
-                    datasetIndex: -1
+                    datasetIndex: -1,
                   },
                   {
-                    text: 'N/A IP',
-                    fillStyle: 'rgb(201, 203, 207)',
-                    strokeStyle: 'rgb(201, 203, 207)',
+                    text: "N/A IP",
+                    fillStyle: "rgb(201, 203, 207)",
+                    strokeStyle: "rgb(201, 203, 207)",
                     lineWidth: 2,
-                    pointStyle: 'circle',
+                    pointStyle: "circle",
                     hidden: false,
-                    datasetIndex: -1
-                  }
+                    datasetIndex: -1,
+                  },
                 ];
 
                 return [...originalLabels, ...ipTypeLabels];
-              }
-            }
+              },
+            },
           },
           tooltip: {
             callbacks: {
-              title: function(context: any) {
+              title: function (context: any) {
                 const index = context[0].dataIndex;
                 const hd = hoverData[index];
                 return hd.timestamp;
               },
-              afterBody: function(context: any) {
+              afterBody: function (context: any) {
                 const index = context[0].dataIndex;
                 const hd = hoverData[index];
                 const tooltipLines = [
                   `Download: ${hd.download} Mbps`,
                   `Upload: ${hd.upload} Mbps`,
                   `Ping: ${hd.ping} ms`,
-                  '',
+                  "",
                   `Server: ${hd.server_name}, ${hd.server_country}`,
                   `Sponsor: ${hd.server_sponsor}`,
                   `Distance: ${hd.server_distance} km`,
-                  '',
+                  "",
                   `ISP: ${hd.client_isp} (${hd.client_country})`,
                 ];
 
-                if (hd.interface_name !== 'N/A') {
+                if (hd.interface_name !== "N/A") {
                   const ipTypeDisplay = hd.ip_type.toUpperCase();
                   tooltipLines.push(
                     `Interface: ${hd.interface_name} (${hd.interface_ip})`,
                     `MTU: ${hd.interface_mtu}`,
                     `Status: ${hd.interface_status}`,
-                    `IP Type: ${ipTypeDisplay}`
+                    `IP Type: ${ipTypeDisplay}`,
                   );
                 }
 
-                if (hd.share_url && hd.share_url !== 'N/A') {
+                if (hd.share_url && hd.share_url !== "N/A") {
                   tooltipLines.push(
-                    '',
+                    "",
                     `Share URL: ${hd.share_url}`,
-                    'Click point to open result'
+                    "Click point to open result",
                   );
                 }
 
                 return tooltipLines;
-              }
-            }
-          }
+              },
+            },
+          },
         },
-        onClick: function(event: any, elements: any) {
+        onClick: function (event: any, elements: any) {
           if (elements.length > 0) {
             const element = elements[0];
             const index = element.index;
             const hd = hoverData[index];
 
-            if (hd.share_url && hd.share_url !== 'N/A') {
-              window.open(hd.share_url, '_blank');
+            if (hd.share_url && hd.share_url !== "N/A") {
+              window.open(hd.share_url, "_blank");
             }
           }
         },
         scales: {
           x: {
-            type: 'time' as const,
+            type: "time" as const,
             display: true,
             title: {
               display: true,
-              text: 'Time'
+              text: "Time",
             },
             time: {
               displayFormats: {
-                hour: 'MMM dd HH:mm',
-                day: 'MMM dd',
-                week: 'MMM dd',
-                month: 'MMM yyyy'
-              }
-            }
+                hour: "MMM dd HH:mm",
+                day: "MMM dd",
+                week: "MMM dd",
+                month: "MMM yyyy",
+              },
+            },
           } as any,
           y: {
-            type: 'linear',
+            type: "linear",
             display: true,
-            position: 'left',
+            position: "left",
             title: {
               display: true,
-              text: 'Speed (Mbps)'
-            }
+              text: "Speed (Mbps)",
+            },
           },
           y1: {
-            type: 'linear',
+            type: "linear",
             display: true,
-            position: 'right',
+            position: "right",
             title: {
               display: true,
-              text: 'Ping (ms)'
+              text: "Ping (ms)",
             },
             grid: {
               drawOnChartArea: false,
             },
-          }
-        } as any
-      } as any
+          },
+        } as any,
+      } as any,
     });
   }
 

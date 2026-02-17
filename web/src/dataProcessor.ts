@@ -1,4 +1,4 @@
-import { SpeedtestData, ProcessedData, SummaryStats } from './types';
+import { SpeedtestData, ProcessedData, SummaryStats } from "./types";
 
 export class DataProcessor {
   /**
@@ -31,10 +31,10 @@ export class DataProcessor {
   /**
    * Classify IP address type
    */
-  private classifyIP(ip: string): 'public' | 'private' | 'n/a' {
+  private classifyIP(ip: string): "public" | "private" | "n/a" {
     // Handle invalid or missing IPs
-    if (!ip || ip === 'N/A' || ip.trim() === '') {
-      return 'n/a';
+    if (!ip || ip === "N/A" || ip.trim() === "") {
+      return "n/a";
     }
 
     const privateRanges = [
@@ -51,19 +51,20 @@ export class DataProcessor {
 
     // Check if it's a private IP
     if (privateRanges.some((range) => range.test(ip))) {
-      return 'private';
+      return "private";
     }
 
     // Check if it looks like a valid IPv4 or IPv6 address
-    const ipv4Regex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    const ipv4Regex =
+      /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     const ipv6Regex = /^(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$|^::1$|^::$/;
 
     if (ipv4Regex.test(ip) || ipv6Regex.test(ip)) {
-      return 'public';
+      return "public";
     }
 
     // If it doesn't match known patterns, mark as n/a
-    return 'n/a';
+    return "n/a";
   }
 
   /**
@@ -74,15 +75,17 @@ export class DataProcessor {
 
     for (const speedtestData of rawData) {
       // Skip results with errors
-      if ('error' in speedtestData) {
+      if ("error" in speedtestData) {
         continue;
       }
 
       try {
         const timestamp = this.parseTimestamp(speedtestData.timestamp);
-        const hasInterfaceData = speedtestData['x-ifconfig'] !== undefined;
+        const hasInterfaceData = speedtestData["x-ifconfig"] !== undefined;
 
-        const interfaceIP = hasInterfaceData ? speedtestData['x-ifconfig']!.ipv4_addr : "N/A";
+        const interfaceIP = hasInterfaceData
+          ? speedtestData["x-ifconfig"]!.ipv4_addr
+          : "N/A";
 
         const processed: ProcessedData = {
           timestamp,
@@ -102,11 +105,15 @@ export class DataProcessor {
           },
           share: speedtestData.share || "",
           interface: {
-            name: hasInterfaceData ? speedtestData['x-ifconfig']!.name : "N/A",
+            name: hasInterfaceData ? speedtestData["x-ifconfig"]!.name : "N/A",
             ip: interfaceIP,
-            mac: hasInterfaceData ? speedtestData['x-ifconfig']!.mac_addr : "N/A",
-            mtu: hasInterfaceData ? speedtestData['x-ifconfig']!.mtu : 0,
-            status: hasInterfaceData ? speedtestData['x-ifconfig']!.status : "N/A",
+            mac: hasInterfaceData
+              ? speedtestData["x-ifconfig"]!.mac_addr
+              : "N/A",
+            mtu: hasInterfaceData ? speedtestData["x-ifconfig"]!.mtu : 0,
+            status: hasInterfaceData
+              ? speedtestData["x-ifconfig"]!.status
+              : "N/A",
             hasData: hasInterfaceData,
             ipType: this.classifyIP(interfaceIP),
           },
@@ -119,7 +126,9 @@ export class DataProcessor {
       }
     }
 
-    return processedData.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+    return processedData.sort(
+      (a, b) => a.timestamp.getTime() - b.timestamp.getTime(),
+    );
   }
 
   /**
@@ -145,8 +154,8 @@ export class DataProcessor {
     const uploads = data.map((d) => d.upload);
     const pings = data.map((d) => d.ping);
 
-    const publicIPTests = data.filter((d) =>
-      d.interface.hasData && d.interface.ipType === 'public'
+    const publicIPTests = data.filter(
+      (d) => d.interface.hasData && d.interface.ipType === "public",
     ).length;
 
     return {

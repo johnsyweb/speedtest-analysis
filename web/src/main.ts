@@ -1,7 +1,7 @@
-import { DataProcessor } from './dataProcessor';
-import { ChartManager } from './chartManager';
-import { UIManager } from './uiManager';
-import { SpeedtestData, ProcessedData } from './types';
+import { DataProcessor } from "./dataProcessor";
+import { ChartManager } from "./chartManager";
+import { UIManager } from "./uiManager";
+import { SpeedtestData, ProcessedData } from "./types";
 
 class SpeedtestApp {
   private dataProcessor: DataProcessor;
@@ -20,24 +20,28 @@ class SpeedtestApp {
    * Set up event listeners
    */
   private setupEventListeners(): void {
-    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-    const loadDataBtn = document.getElementById('loadDataBtn') as HTMLButtonElement;
-    const downloadCsvBtn = document.getElementById('downloadCsvBtn') as HTMLButtonElement;
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const loadDataBtn = document.getElementById(
+      "loadDataBtn",
+    ) as HTMLButtonElement;
+    const downloadCsvBtn = document.getElementById(
+      "downloadCsvBtn",
+    ) as HTMLButtonElement;
 
-    loadDataBtn.addEventListener('click', () => this.handleFileLoad());
-    downloadCsvBtn.addEventListener('click', () => this.handleCSVDownload());
+    loadDataBtn.addEventListener("click", () => this.handleFileLoad());
+    downloadCsvBtn.addEventListener("click", () => this.handleCSVDownload());
   }
 
   /**
    /**
     * Handle file loading
     */
-   private async handleFileLoad(): Promise<void> {
-     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
-     const files = fileInput.files;
+  private async handleFileLoad(): Promise<void> {
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    const files = fileInput.files;
 
-     if (!files || files.length === 0) {
-      this.uiManager.showError('Please select one or more JSON files to load.');
+    if (!files || files.length === 0) {
+      this.uiManager.showError("Please select one or more JSON files to load.");
       return;
     }
 
@@ -61,13 +65,18 @@ class SpeedtestApp {
             allData.push(jsonData);
           }
         } catch (parseError) {
-          console.warn(`Warning: Could not parse JSON from file ${file.name}:`, parseError);
+          console.warn(
+            `Warning: Could not parse JSON from file ${file.name}:`,
+            parseError,
+          );
           continue;
         }
       }
 
       if (allData.length === 0) {
-        this.uiManager.showError('No valid speedtest data found in the selected files.');
+        this.uiManager.showError(
+          "No valid speedtest data found in the selected files.",
+        );
         return;
       }
 
@@ -75,16 +84,19 @@ class SpeedtestApp {
       this.currentData = this.dataProcessor.processSpeedtestData(allData);
 
       if (this.currentData.length === 0) {
-        this.uiManager.showError('No valid speedtest data could be processed from the selected files.');
+        this.uiManager.showError(
+          "No valid speedtest data could be processed from the selected files.",
+        );
         return;
       }
 
       // Update UI
       this.updateUI();
-
     } catch (error) {
-      console.error('Error loading data:', error);
-      this.uiManager.showError(`Error loading data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error("Error loading data:", error);
+      this.uiManager.showError(
+        `Error loading data: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
   }
 
@@ -95,7 +107,8 @@ class SpeedtestApp {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = (e) => resolve(e.target?.result as string);
-      reader.onerror = (e) => reject(new Error(`Failed to read file: ${file.name}`));
+      reader.onerror = (e) =>
+        reject(new Error(`Failed to read file: ${file.name}`));
       reader.readAsText(file);
     });
   }
@@ -124,17 +137,17 @@ class SpeedtestApp {
    * Handle CSV download
    */
   private handleCSVDownload(): void {
-    const csvData = document.getElementById('csvData')?.textContent;
+    const csvData = document.getElementById("csvData")?.textContent;
     if (!csvData) {
-      alert('No data available to download.');
+      alert("No data available to download.");
       return;
     }
 
-    const blob = new Blob([csvData], { type: 'text/csv' });
+    const blob = new Blob([csvData], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'speedtest_data.csv';
+    a.download = "speedtest_data.csv";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -143,6 +156,8 @@ class SpeedtestApp {
 }
 
 // Initialize the app when the page loads
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+  const yearEl = document.getElementById("footer-year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear().toString();
   new SpeedtestApp();
 });
