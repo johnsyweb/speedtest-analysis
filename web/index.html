@@ -300,38 +300,55 @@
         margin: 5px;
       }
       .welcome-section {
-        padding: 40px;
-        border-radius: 12px;
-        margin-bottom: 30px;
-        text-align: center;
+        padding: 2rem 2rem 2rem calc(2rem + 4px);
+        margin-bottom: 2rem;
+        border-radius: 8px;
+        border-left: 4px solid;
+        text-align: left;
+      }
+      .welcome-section .welcome-lead {
+        max-width: 65ch;
+        margin-bottom: 1.5rem;
       }
       .welcome-section h2 {
-        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
         margin-top: 0;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid;
       }
       .welcome-section h3 {
-        margin-top: 25px;
-        text-align: left;
+        margin-top: 1.75rem;
+        margin-bottom: 0.5rem;
       }
       .welcome-section p {
-        font-size: 1.1em;
-        line-height: 1.6;
+        font-size: 1.05em;
+        line-height: 1.7;
+        margin-bottom: 1rem;
       }
+      .welcome-section p:last-child {
+        margin-bottom: 0;
+      }
+      .welcome-section ol,
       .welcome-section ul {
-        text-align: left;
-        display: inline-block;
+        margin: 0 0 1rem 1.5rem;
+        padding-left: 1.5rem;
       }
       .welcome-section li {
-        margin: 8px 0;
+        margin-bottom: 0.5rem;
+      }
+      .welcome-section li:last-child {
+        margin-bottom: 0;
       }
       .welcome-section code {
-        padding: 2px 6px;
+        padding: 0.2em 0.4em;
         border-radius: 4px;
         font-family: "Courier New", monospace;
+        font-size: 0.9em;
       }
       .welcome-section .ready-p {
-        margin-top: 20px;
-        opacity: 0.95;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+        font-weight: 600;
       }
 
       @media (prefers-color-scheme: light) {
@@ -466,16 +483,20 @@
           color: #fafafa;
         }
         .welcome-section {
-          background-color: #1565c0;
-          color: #fafafa;
+          background-color: #e3f2fd;
+          color: #212121;
+          border-left-color: #1565c0;
         }
         .welcome-section h2,
         .welcome-section h3 {
-          color: #fafafa;
+          color: #0d47a1;
+        }
+        .welcome-section h2 {
+          border-bottom-color: #90caf9;
         }
         .welcome-section code {
-          background-color: rgba(0, 0, 0, 0.2);
-          color: #fafafa;
+          background-color: #bbdefb;
+          color: #0d47a1;
         }
       }
       @media (prefers-color-scheme: dark) {
@@ -609,16 +630,20 @@
           color: #121212;
         }
         .welcome-section {
-          background-color: #64b5f6;
-          color: #121212;
+          background-color: #1e3a5f;
+          color: #e0e0e0;
+          border-left-color: #64b5f6;
         }
         .welcome-section h2,
         .welcome-section h3 {
-          color: #121212;
+          color: #90caf9;
+        }
+        .welcome-section h2 {
+          border-bottom-color: #42a5f5;
         }
         .welcome-section code {
-          background-color: rgba(0, 0, 0, 0.2);
-          color: #e0e0e0;
+          background-color: #0d47a1;
+          color: #bbdefb;
         }
       }
     </style>
@@ -645,10 +670,10 @@
 
         <div id="welcomeSection" class="welcome-section">
           <h2>❓ Why use this tool?</h2>
-          <p>
+          <p class="welcome-lead">
             Monitor your internet speed over time to investigate network issues,
             verify ISP performance, and track changes. This tool helps you
-            collect and visualize speedtest results from your own
+            collect and visualise speedtest results from your own
             infrastructure.
           </p>
 
