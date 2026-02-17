@@ -23,6 +23,7 @@ This repository contains both the data-collection scripts (for automated speedte
 - **📋 Detailed Tables** - Complete test-by-test breakdown with sortable columns
 - **💾 CSV Export** - Download processed data for external analysis
 - **📱 Responsive Design** - Works on all devices and screen sizes
+- **🎨 johnsy.com styling** - Matches main site palette, header, footer and breadcrumbs; light and dark mode
 - **⚡ Real-time Processing** - Instant analysis of uploaded data
 
 ## 📁 Project Structure
