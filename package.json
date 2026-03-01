@@ -17,7 +17,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@types/node": "^20.19.30",
+    "@types/node": "^20.19.35",
     "typescript": "^5.9.3",
     "ts-node": "^10.0.0"
   },
