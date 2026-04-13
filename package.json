@@ -17,7 +17,7 @@
     "type-check": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json"
   },
   "dependencies": {
-    "@types/node": "^20.19.30",
+    "@types/node": "^20.19.39",
     "typescript": "^5.9.3",
     "ts-node": "^10.0.0"
   },
