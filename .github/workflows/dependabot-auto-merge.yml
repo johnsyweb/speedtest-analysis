@@ -1,0 +1,45 @@
+name: Dependabot auto-merge
+
+on:
+  workflow_run:
+    workflows:
+      - Deploy to GitHub Pages
+    types:
+      - completed
+
+concurrency:
+  group: dependabot-auto-merge-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: false
+
+jobs:
+  merge-after-ci:
+    name: Merge Dependabot PR after successful CI
+    runs-on: ubuntu-latest
+    if: |
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      startsWith(github.event.workflow_run.head_branch, 'dependabot/')
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Merge Dependabot pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo="${{ github.repository }}"
+          branch="${{ github.event.workflow_run.head_branch }}"
+          number="$(gh pr list --repo "$repo" --head "$branch" --state open --json number --jq '.[0].number // empty')"
+          if [ -z "$number" ]; then
+            echo "No open pull request for branch \"$branch\"; skipping."
+            exit 0
+          fi
+          login="$(gh pr view "$number" --repo "$repo" --json author --jq '.author.login')"
+          if [ "$login" != "dependabot[bot]" ]; then
+            echo "Pull request #${number} is not from Dependabot (author: ${login}); skipping."
+            exit 0
+          fi
+          gh pr merge "$number" --repo "$repo" --squash

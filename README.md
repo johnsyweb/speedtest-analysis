@@ -39,8 +39,11 @@ speedtest-analysis/
 │   │   └── uiManager.ts     # DOM manipulation
 │   ├── index.html           # Main HTML template
 │   └── README.md            # Web app documentation
-├── .github/workflows/        # GitHub Actions deployment
-│   └── deploy.yml           # Automatic GitHub Pages deployment
+├── .github/
+│   ├── dependabot.yml        # Grouped npm and GitHub Actions version updates
+│   └── workflows/
+│       ├── deploy.yml        # Build check and GitHub Pages deployment
+│       └── dependabot-auto-merge.yml  # Merges Dependabot PRs after CI passes
 ├── speedtest.sh             # Data collection script
 ├── com.speedtest.plist      # macOS launchd configuration
 ├── install_speedtest_deps.sh # Dependencies installer
@@ -216,11 +219,12 @@ Speedtest results are saved as JSON files in `~/SpeedtestResults/`:
 3. Push to main branch - automatic deployment starts!
 4. Access your app at: `https://your-username.github.io/speedtest-analysis/`
 
-#### GitHub Actions Workflow:
-The repository includes `.github/workflows/deploy.yml` that automatically:
-- Builds the web application
-- Deploys to GitHub Pages
-- Runs on every push to main branch
+#### GitHub Actions workflows
+The repository includes:
+- **`.github/workflows/deploy.yml`** — builds the web application, uploads the Pages artifact, and deploys when the branch is `main`. It runs on pushes to `main` and on pull requests targeting `main`, so every proposed change goes through the same build before merge.
+- **`.github/workflows/dependabot-auto-merge.yml`** — after that workflow succeeds on a Dependabot pull request, merges the pull request with a squash merge so dependency updates land without manual clicking. The pull request author must be `dependabot[bot]` and the head branch must start with `dependabot/`. Your repository must allow **squash merges** (Settings → General → Pull requests); if you only allow merge commits, change the final `gh pr merge` line in that workflow to use `--merge` instead of `--squash`. If **branch protection** requires approving reviews, either allow the GitHub Actions bot to bypass where appropriate or use a personal access token with `contents` and `pull-requests` scope stored as a repository secret and pass it to `GH_TOKEN` for that step.
+
+Dependabot updates are **batched** via groups in `.github/dependabot.yml`: one grouped pull request for npm dependencies and one for GitHub Actions, on the existing weekly schedule, which keeps the pull request queue small.
 
 ### Other Hosting Options
 - Netlify: Drag & drop the `dist-web` folder
