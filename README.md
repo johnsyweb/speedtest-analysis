@@ -49,7 +49,8 @@ speedtest-analysis/
 ├── install_speedtest_deps.sh # Dependencies installer
 ├── package.json             # Node.js project configuration
 ├── vite.config.ts           # Vite build configuration
-├── tsconfig.json            # TypeScript compiler configuration
+├── tsconfig.json            # TypeScript compiler configuration (app and tooling scripts)
+├── tsconfig.node.json       # TypeScript for Vite config (ESM / bundler resolution)
 └── README.md                # This file
 ```
 
@@ -88,12 +89,13 @@ This project uses `mise` for development environment management and `pnpm` for p
 
 - **mise**: Manages Node.js and pnpm versions automatically
 - **pnpm**: Fast, disk space efficient package manager
-- **Vite 8 / Rolldown on CI**: `package.json` sets `pnpm.supportedArchitectures` (Linux and macOS, x64 and arm64, glibc) so optional `@rolldown/binding-*` packages are installed and locked for GitHub’s Ubuntu runners as well as local development. Without this, a lockfile produced only on macOS can omit Linux bindings and `vite build` fails in CI.
+- **Vite 8 / Rolldown**: Vite 8 uses [Rolldown](https://rolldown.rs/) as the unified bundler; see the [Vite 8 announcement](https://vite.dev/blog/announcing-vite8) and [migration from v7](https://vite.dev/guide/migration) if you are upgrading an older fork. **Node.js** must satisfy `^20.19.0 || >=22.12.0` (same as upstream Vite 8).
+- **pnpm / Rolldown on CI**: `package.json` sets `pnpm.supportedArchitectures` (Linux and macOS, x64 and arm64, glibc) so optional `@rolldown/binding-*` packages are installed and locked for GitHub’s Ubuntu runners as well as local development. Without this, a lockfile produced only on macOS can omit Linux bindings and `vite build` fails in CI.
 - **Automatic setup**: Run `pnpm run setup` to install everything
 
 #### Prerequisites
-- [mise](https://mise.jdx.dev/) installed globally
-- Or manually install Node.js 18+ and pnpm 8+
+- [mise](https://mise.jdx.dev/) installed globally (the repo pins Node 22 via `.tool-versions`; any version matching `^20.19.0 || >=22.12.0` is acceptable)
+- Or manually install Node.js **20.19+** or **22.12+** and pnpm 8+
 
 ### Set Up Automated Data Collection
 

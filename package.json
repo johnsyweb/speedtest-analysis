@@ -14,7 +14,7 @@
     "web:preview": "vite preview",
     "setup": "mise install && pnpm install",
     "clean": "pnpm store prune && rm -rf node_modules pnpm-lock.yaml",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json"
   },
   "dependencies": {
     "@types/node": "^20.19.30",
@@ -47,7 +47,7 @@
     "url": "."
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": "^20.19.0 || >=22.12.0",
     "pnpm": ">=8.0.0"
   },
   "packageManager": "pnpm@8.15.0",
