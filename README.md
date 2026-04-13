@@ -90,12 +90,12 @@ This project uses `mise` for development environment management and `pnpm` for p
 - **mise**: Manages Node.js and pnpm versions automatically
 - **pnpm**: Fast, disk space efficient package manager
 - **Vite 8 / Rolldown**: Vite 8 uses [Rolldown](https://rolldown.rs/) as the unified bundler; see the [Vite 8 announcement](https://vite.dev/blog/announcing-vite8) and [migration from v7](https://vite.dev/guide/migration) if you are upgrading an older fork. **Node.js** must satisfy `^20.19.0 || >=22.12.0` (same as upstream Vite 8).
-- **pnpm / Rolldown on CI**: `package.json` sets `pnpm.supportedArchitectures` (Linux and macOS, x64 and arm64, glibc) so optional `@rolldown/binding-*` packages are installed and locked for GitHub’s Ubuntu runners as well as local development. Without this, a lockfile produced only on macOS can omit Linux bindings and `vite build` fails in CI.
+- **pnpm / Rolldown on CI**: Rolldown’s platform bindings are listed as **direct devDependencies** (`@rolldown/binding-linux-x64-gnu` and the Darwin variants, pinned to the same version as Vite’s `rolldown` dependency) so pnpm always links them for the right OS. `pnpm.supportedArchitectures` still includes Linux and macOS with x64 and arm64. That combination avoids `Cannot find module '@rolldown/binding-linux-x64-gnu'` on GitHub Actions when optional sub-dependencies are not linked the same way as on a local machine.
 - **Automatic setup**: Run `pnpm run setup` to install everything
 
 #### Prerequisites
 - [mise](https://mise.jdx.dev/) installed globally (the repo pins Node 22 via `.tool-versions`; any version matching `^20.19.0 || >=22.12.0` is acceptable)
-- Or manually install Node.js **20.19+** or **22.12+** and pnpm 8+
+- Or manually install Node.js **20.19+** or **22.12+** and **pnpm 10+** (see `packageManager` in `package.json`)
 
 ### Set Up Automated Data Collection
 

@@ -44,7 +44,7 @@ This web UI was created to quickly inspect and visualise speedtest JSON files pr
 
 ### Prerequisites
 - [mise](https://mise.jdx.dev/) installed globally
-- Or manually install Node.js **20.19+** or **22.12+** and pnpm 8+ (required for Vite 8)
+- Or manually install Node.js **20.19+** or **22.12+** and **pnpm 10+** (required for Vite 8; see root `package.json` `packageManager`)
 
 ### Setup
 ```bash
