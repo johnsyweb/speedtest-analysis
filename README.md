@@ -88,6 +88,7 @@ This project uses `mise` for development environment management and `pnpm` for p
 
 - **mise**: Manages Node.js and pnpm versions automatically
 - **pnpm**: Fast, disk space efficient package manager
+- **Vite 8 / Rolldown on CI**: `package.json` sets `pnpm.supportedArchitectures` (Linux and macOS, x64 and arm64, glibc) so optional `@rolldown/binding-*` packages are installed and locked for GitHub’s Ubuntu runners as well as local development. Without this, a lockfile produced only on macOS can omit Linux bindings and `vite build` fails in CI.
 - **Automatic setup**: Run `pnpm run setup` to install everything
 
 #### Prerequisites

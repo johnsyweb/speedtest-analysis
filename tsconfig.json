@@ -17,11 +17,13 @@
     "types": ["node"]
   },
   "include": [
-    "*.ts"
+    "*.ts",
+    "web/src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "vite.config.ts"
   ],
   "ts-node": {
     "esm": false,

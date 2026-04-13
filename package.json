@@ -22,7 +22,7 @@
     "ts-node": "^10.0.0"
   },
   "devDependencies": {
-    "vite": "^7.3.1",
+    "vite": "^8.0.8",
     "@types/chart.js": "^2.9.0"
   },
   "bin": {
@@ -56,6 +56,11 @@
       "allowedVersions": {
         "@types/chart.js": "*"
       }
+    },
+    "supportedArchitectures": {
+      "os": ["darwin", "linux"],
+      "cpu": ["x64", "arm64"],
+      "libc": ["glibc"]
     }
   }
 }
