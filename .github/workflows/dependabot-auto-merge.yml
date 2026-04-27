@@ -25,13 +25,14 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Merge Dependabot pull request
+      - name: Enable auto-merge for Dependabot pull request
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           repo="${{ github.repository }}"
           branch="${{ github.event.workflow_run.head_branch }}"
+          head_sha="${{ github.event.workflow_run.head_sha }}"
           number="$(gh pr list --repo "$repo" --head "$branch" --state open --json number --jq '.[0].number // empty')"
           if [ -z "$number" ]; then
             echo "No open pull request for branch \"$branch\"; skipping."
@@ -42,4 +43,4 @@ jobs:
             echo "Pull request #${number} is not from Dependabot (author: ${login}); skipping."
             exit 0
           fi
-          gh pr merge "$number" --repo "$repo" --squash
+          gh pr merge "$number" --repo "$repo" --auto --merge --delete-branch --match-head-commit "$head_sha"
