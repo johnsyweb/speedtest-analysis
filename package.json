@@ -4,6 +4,7 @@
   "description": "Comprehensive TypeScript-based speedtest analysis tool with interactive charts and detailed reporting",
   "main": "speedtest-viz.ts",
   "scripts": {
+    "preinstall": "node ./enforce-pnpm.cjs",
     "build": "tsc",
     "start": "ts-node speedtest-viz.ts",
     "dev": "vite",
